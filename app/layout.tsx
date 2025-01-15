@@ -27,7 +27,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider afterSignOutUrl={"/auth/sign-in"}>
+    <ClerkProvider             afterSignOutUrl={"/sign-in"}
+      signInFallbackRedirectUrl="/infallback"
+      signUpFallbackRedirectUrl="/upfallback">
       <html
         lang="en"
         className="dark"
