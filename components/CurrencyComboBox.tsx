@@ -12,7 +12,7 @@ import { UpdateUserCurrency } from "@/app/wizard/_actions/userSettings";
 import SkeletonWrapper from "@/components/SkeletonWrapper";
 import { cn } from "@/lib/utils";
 
-export function SimpleCurrencySelector() {
+export function CurrencyComboBox() {
   const [isOpen, setIsOpen] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState("");
   const dropdownRef = React.useRef<HTMLDivElement>(null);
