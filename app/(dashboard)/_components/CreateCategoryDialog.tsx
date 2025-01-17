@@ -45,11 +45,11 @@ import { useTheme } from "next-themes";
 
 interface Props {
   type: TransactionType;
-  successCallback: (category: Category) => void;
+  onSuccess: (category: Category) => void;
   trigger?: ReactNode;
 }
 
-function CreateCategoryDialog({ type, successCallback, trigger }: Props) {
+function CreateCategoryDialog({ type, onSuccess, trigger }: Props) {
   const [open, setOpen] = useState(false);
   const form = useForm<CreateCategorySchemaType>({
     resolver: zodResolver(CreateCategorySchema),
@@ -74,7 +74,7 @@ function CreateCategoryDialog({ type, successCallback, trigger }: Props) {
         id: "create-category",
       });
 
-      successCallback(data);
+      onSuccess(data);
 
       await queryClient.invalidateQueries({
         queryKey: ["categories"],
