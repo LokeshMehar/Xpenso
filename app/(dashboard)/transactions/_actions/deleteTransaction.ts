@@ -4,9 +4,11 @@ import prisma from "@/lib/prisma";
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 
-export async function DeleteTransaction(id: string) {
+export async function DeleteTransaction(id: string)
+{
   const user = await currentUser();
-  if (!user) {
+  if (!user)
+  {
     redirect("/sign-in");
   }
 
@@ -17,7 +19,8 @@ export async function DeleteTransaction(id: string) {
     },
   });
 
-  if (!transaction) {
+  if (!transaction)
+  {
     throw new Error("bad request");
   }
 
