@@ -8,6 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogDescription,
 } from "@/components/ui/dialog";
 import { TransactionType } from "@/lib/types";
 import { cn } from "@/lib/utils";
@@ -16,8 +17,6 @@ import {
   CreateTransactionSchemaType,
 } from "@/schema/transaction";
 import { ReactNode, useCallback, useState } from "react";
-
-import React from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -56,9 +55,14 @@ function CreateTransactionDialog({ trigger, type }: Props) {
     defaultValues: {
       type,
       date: new Date(),
+      description: "",
+      amount: 0,
+      category: undefined
     },
   });
+  
   const [open, setOpen] = useState(false);
+  
   const handleCategoryChange = useCallback(
     (value: string) => {
       form.setValue("category", value);
@@ -83,12 +87,11 @@ function CreateTransactionDialog({ trigger, type }: Props) {
         category: undefined,
       });
 
-      // After creating a transaction, we need to invalidate the overview query which will refetch data in the homepage
       queryClient.invalidateQueries({
         queryKey: ["overview"],
       });
 
-      setOpen((prev) => !prev);
+      setOpen(false);
     },
   });
 
@@ -107,7 +110,7 @@ function CreateTransactionDialog({ trigger, type }: Props) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
-      <DialogContent>
+      <DialogContent aria-describedby="transaction-dialog-description">
         <DialogHeader>
           <DialogTitle>
             Create a new{" "}
@@ -121,6 +124,9 @@ function CreateTransactionDialog({ trigger, type }: Props) {
             </span>
             transaction
           </DialogTitle>
+          <DialogDescription id="transaction-dialog-description">
+            Enter the details for your new {type} transaction below
+          </DialogDescription>
         </DialogHeader>
         <Form {...form}>
           <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
@@ -131,7 +137,7 @@ function CreateTransactionDialog({ trigger, type }: Props) {
                 <FormItem>
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Input defaultValue={""} {...field} />
+                    <Input {...field} />
                   </FormControl>
                   <FormDescription>
                     Transaction description (optional)
@@ -146,7 +152,11 @@ function CreateTransactionDialog({ trigger, type }: Props) {
                 <FormItem>
                   <FormLabel>Amount</FormLabel>
                   <FormControl>
-                    <Input defaultValue={0} type="number" {...field} />
+                    <Input 
+                      type="number" 
+                      {...field}
+                      onChange={(e) => field.onChange(Number(e.target.value))} 
+                    />
                   </FormControl>
                   <FormDescription>
                     Transaction amount (required)
@@ -204,10 +214,7 @@ function CreateTransactionDialog({ trigger, type }: Props) {
                         <Calendar
                           mode="single"
                           selected={field.value}
-                          onSelect={(value) => {
-                            if (!value) return;
-                            field.onChange(value);
-                          }}
+                          onSelect={field.onChange}
                           initialFocus
                         />
                       </PopoverContent>
@@ -225,9 +232,7 @@ function CreateTransactionDialog({ trigger, type }: Props) {
             <Button
               type="button"
               variant={"secondary"}
-              onClick={() => {
-                form.reset();
-              }}
+              onClick={() => form.reset()}
             >
               Cancel
             </Button>

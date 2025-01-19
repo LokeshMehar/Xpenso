@@ -83,7 +83,7 @@ function CategoryPicker({ type, onChange }: Props) {
               </div>
             )}
             
-            <div className="flex flex-col py-2">
+            <div className="flex flex-col pt-2">
               {filteredCategories?.map((category: { type: string; name: string; createdAt: Date; userId: string; icon: string; }) => (
                 <div
                   key={category.createdAt.toString()}
@@ -105,6 +105,7 @@ function CategoryPicker({ type, onChange }: Props) {
                   )}
                 </div>
               ))}
+              <CreateCategoryDialog onSuccess={successCallback} type={type} />
             </div>
           </div>
         </div>

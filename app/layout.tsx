@@ -1,24 +1,15 @@
-
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Inter } from "next/font/google";
 import "./globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
-import Navbar from "../components/Navbar";
 import RootProviders from "@/components/providers/RootProviders";
+import { Toaster } from "@/components/ui/sonner";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Abracadabra",
-  description: "Abracadabra is a magic app.",
+  title: "abracadabra",
+  description: "wheres my magical hat",
 };
 
 export default function RootLayout({
@@ -27,9 +18,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ClerkProvider             afterSignOutUrl={"/sign-in"}
-      signInFallbackRedirectUrl="/infallback"
-      signUpFallbackRedirectUrl="/upfallback">
+    <ClerkProvider>
       <html
         lang="en"
         className="dark"
@@ -37,11 +26,9 @@ export default function RootLayout({
           colorScheme: "dark",
         }}
       >
-        <body className= {`${geistSans.className} ${geistMono.className}`}>
-          <RootProviders>
-            <Navbar />
-            {children}
-          </RootProviders>
+        <body className={inter.className}>
+          <Toaster richColors position="bottom-right" />
+          <RootProviders>{children}</RootProviders>
         </body>
       </html>
     </ClerkProvider>
