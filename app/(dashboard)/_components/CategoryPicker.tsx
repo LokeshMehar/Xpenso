@@ -79,7 +79,7 @@ function CategoryPicker({ type, onChange }: Props) {
               <div className="p-4 text-sm text-muted-foreground">
                 <p className="text-center">Category not found</p>
                 <p className="text-center text-xs">Tip: Create a new category</p>
-                <CreateCategoryDialog onSuccess={successCallback} type={type} />
+                {/* <CreateCategoryDialog onSuccess={successCallback} type={type} /> */}
               </div>
             )}
             
