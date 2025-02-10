@@ -1,7 +1,6 @@
 import prisma from "@/lib/prisma";
 import { Period, Timeframe } from "@/lib/types";
 import { currentUser } from "@clerk/nextjs/server";
-import { error } from "console";
 import { getDaysInMonth } from "date-fns";
 import { redirect } from "next/navigation";
 import { z } from "zod";
@@ -12,9 +11,11 @@ const getHistoryDataSchema = z.object({
   year: z.coerce.number().min(2000).max(3000),
 });
 
-export async function GET(request: Request) {
+export async function GET(request: Request)
+{
   const user = await currentUser();
-  if (!user) {
+  if (!user)
+  {
     redirect("/sign-in");
   }
 
@@ -29,7 +30,8 @@ export async function GET(request: Request) {
     year,
   });
 
-  if (!queryParams.success) {
+  if (!queryParams.success)
+  {
     return Response.json(queryParams.error.message, {
       status: 400,
     });
@@ -51,8 +53,10 @@ async function getHistoryData(
   userId: string,
   timeframe: Timeframe,
   period: Period
-) {
-  switch (timeframe) {
+)
+{
+  switch (timeframe)
+  {
     case "year":
       return await getYearHistoryData(userId, period.year);
     case "month":
@@ -68,7 +72,8 @@ type HistoryData = {
   day?: number;
 };
 
-async function getYearHistoryData(userId: string, year: number) {
+async function getYearHistoryData(userId: string, year: number)
+{
   const result = await prisma.yearHistory.groupBy({
     by: ["month"],
     where: {
@@ -90,12 +95,14 @@ async function getYearHistoryData(userId: string, year: number) {
 
   const history: HistoryData[] = [];
 
-  for (let i = 0; i < 12; i++) {
+  for (let i = 0; i < 12; i++)
+  {
     let expense = 0;
     let income = 0;
 
     const month = result.find((row) => row.month === i);
-    if (month) {
+    if (month)
+    {
       expense = month._sum.expense || 0;
       income = month._sum.income || 0;
     }
@@ -115,7 +122,8 @@ async function getMonthHistoryData(
   userId: string,
   year: number,
   month: number
-) {
+)
+{
   const result = await prisma.monthHistory.groupBy({
     by: ["day"],
     where: {
@@ -138,12 +146,14 @@ async function getMonthHistoryData(
 
   const history: HistoryData[] = [];
   const daysInMonth = getDaysInMonth(new Date(year, month));
-  for (let i = 1; i <= daysInMonth; i++) {
+  for (let i = 1; i <= daysInMonth; i++)
+  {
     let expense = 0;
     let income = 0;
 
     const day = result.find((row) => row.day === i);
-    if (day) {
+    if (day)
+    {
       expense = day._sum.expense || 0;
       income = day._sum.income || 0;
     }

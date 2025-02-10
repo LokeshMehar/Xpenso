@@ -1,12 +1,13 @@
 import prisma from "@/lib/prisma";
 import { OverviewQuerySchema } from "@/schema/overview";
 import { currentUser } from "@clerk/nextjs/server";
-import { Return } from "@prisma/client/runtime/library";
 import { redirect } from "next/navigation";
 
-export async function GET(request: Request) {
+export async function GET(request: Request)
+{
   const user = await currentUser();
-  if (!user) {
+  if (!user)
+  {
     redirect("/sign-in");
   }
 
@@ -15,7 +16,8 @@ export async function GET(request: Request) {
   const to = searchParams.get("to");
 
   const queryParams = OverviewQuerySchema.safeParse({ from, to });
-  if (!queryParams.success) {
+  if (!queryParams.success)
+  {
     throw new Error(queryParams.error.message);
   }
 
@@ -31,7 +33,8 @@ export type GetCategoriesStatsResponseType = Awaited<
   ReturnType<typeof getCategoriesStats>
 >;
 
-async function getCategoriesStats(userId: string, from: Date, to: Date) {
+async function getCategoriesStats(userId: string, from: Date, to: Date)
+{
   const stats = await prisma.transaction.groupBy({
     by: ["type", "category", "categoryIcon"],
     where: {

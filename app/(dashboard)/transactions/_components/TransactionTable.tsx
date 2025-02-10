@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+
 "use client";
 
 import { DateToUTCDate } from "@/lib/helpers";
@@ -152,7 +152,7 @@ function TransactionTable({ from, to }: Props) {
       ).then((res) => res.json()),
   });
 
-  const handleExportCSV = (data: any[]) => {
+  const handleExportCSV = (data: { [k: string]: string | number }[]) => {
     const csv = generateCsv(csvConfig)(data);
     download(csvConfig)(csv);
   };
