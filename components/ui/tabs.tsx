@@ -2,11 +2,12 @@
 
 import * as React from "react"
 import * as TabsPrimitive from "@radix-ui/react-tabs"
-
 import { cn } from "@/lib/utils"
 
+// Main Tabs wrapper component
 const Tabs = TabsPrimitive.Root
 
+// TabsList component - the container for tab triggers
 const TabsList = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.List>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.List>
@@ -20,8 +21,10 @@ const TabsList = React.forwardRef<
     {...props}
   />
 ))
+
 TabsList.displayName = TabsPrimitive.List.displayName
 
+// TabsTrigger component - individual tab buttons/triggers
 const TabsTrigger = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger>
@@ -35,8 +38,10 @@ const TabsTrigger = React.forwardRef<
     {...props}
   />
 ))
+
 TabsTrigger.displayName = TabsPrimitive.Trigger.displayName
 
+// TabsContent component - content that corresponds to the active tab
 const TabsContent = React.forwardRef<
   React.ElementRef<typeof TabsPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>
@@ -50,6 +55,8 @@ const TabsContent = React.forwardRef<
     {...props}
   />
 ))
+
 TabsContent.displayName = TabsPrimitive.Content.displayName
 
+// Exporting components for use in the app
 export { Tabs, TabsList, TabsTrigger, TabsContent }
